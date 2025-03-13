@@ -109,7 +109,8 @@ export function useIAP(): IAP_STATUS {
           setCurrentPurchase(undefined);
         }
 
-        if (purchase.id === currentPurchaseError?.productId) {  // Note that PurchaseError still uses productId
+        if (purchase.id === currentPurchaseError?.productId) {
+          // Note that PurchaseError still uses productId
           setCurrentPurchaseError(undefined);
         }
       }

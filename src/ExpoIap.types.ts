@@ -61,7 +61,7 @@ export type ProductPurchase =
 
 // Union type for platform-specific subscription purchase types with proper discriminators
 export type SubscriptionPurchase =
-  | (ProductPurchaseAndroid & AndroidPlatform & { autoRenewingAndroid: boolean })
+  | (ProductPurchaseAndroid & AndroidPlatform & {autoRenewingAndroid: boolean})
   | (ProductPurchaseIos & IosPlatform);
 
 export type Purchase = ProductPurchase | SubscriptionPurchase;
