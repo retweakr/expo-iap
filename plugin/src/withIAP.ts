@@ -4,9 +4,12 @@ import {
   WarningAggregator,
   withAndroidManifest,
   withAppBuildGradle,
-} from 'expo/config-plugins';
+} from '@expo/config-plugins';
 
 const pkg = require('../../package.json');
+
+// Import withIAPHorizon for Horizon Billing Compat SDK support
+import withIAPHorizon from './withIAPHorizon';
 
 // Global flag to prevent duplicate logs
 let hasLoggedPluginExecution = false;
@@ -100,7 +103,8 @@ const withIAPAndroid: ConfigPlugin = (config) => {
 
 const withIAP: ConfigPlugin = (config, _props) => {
   try {
-    const result = withIAPAndroid(config);
+    const useHorizon = !!process.env.EXPO_HORIZON;
+    const result = useHorizon ? withIAPHorizon(config) : withIAPAndroid(config);
     // Set flag after first execution to prevent duplicate logs
     hasLoggedPluginExecution = true;
     return result;

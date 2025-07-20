@@ -4,6 +4,13 @@ apply plugin: 'kotlin-android'
 group = 'expo.modules.iap'
 version = '0.1.0'
 
+// Add Horizon Maven repository
+repositories {
+    maven {
+        url 'https://maven.horizon.meta.com/'
+    }
+}
+
 def expoModulesCorePlugin = new File(project(":expo-modules-core").projectDir.absolutePath, "ExpoModulesCorePlugin.gradle")
 apply from: expoModulesCorePlugin
 applyKotlinExpoModulesCorePlugin()
@@ -41,6 +48,19 @@ android {
   lintOptions {
     abortOnError false
   }
+
+  // Configure source sets based on horizonEnabled property
+  sourceSets {
+        main {
+            java {
+              if (project.hasProperty('horizonEnabled') && project.horizonEnabled) {
+                  srcDirs = ['src/main/java', 'src/horizon/java']
+              } else {
+                  srcDirs = ['src/main/java', 'src/android/java']
+              }
+            }
+        }
+    }
   kotlinOptions {
     jvmTarget = "17"
     freeCompilerArgs += ["-Xskip-metadata-version-check"]
@@ -53,6 +73,13 @@ android {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7"
-    implementation "com.android.billingclient:billing-ktx:8.0.0"
-    implementation "com.google.android.gms:play-services-base:18.1.0"
+    if (project.hasProperty('horizonEnabled') && project.horizonEnabled) {
+        def androidPlatformSdkVersion = "72"
+        def horizonBillingCompatibilitySdkVersion = "1.1.1"
+        implementation "com.meta.horizon.platform.ovr:android-platform-sdk:${androidPlatformSdkVersion}"
+        implementation "com.meta.horizon.billingclient.api:horizon-billing-compatibility:${horizonBillingCompatibilitySdkVersion}"
+    } else {
+        implementation "com.android.billingclient:billing-ktx:8.0.0"
+        implementation "com.google.android.gms:play-services-base:18.1.0"
+    }
 }
