@@ -1,3 +1,4 @@
+/* global jest */
 module.exports = {
   requireNativeModule: jest.fn(() => ({
     sync: jest.fn(),

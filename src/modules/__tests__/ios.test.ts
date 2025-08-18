@@ -1,7 +1,16 @@
 // Mock the native module first
 jest.mock('../../ExpoIapModule');
 
+// Mock React Native's Linking module
+jest.mock('react-native', () => ({
+  Linking: {
+    openURL: jest.fn(),
+  },
+}));
+
+/* eslint-disable import/first */
 import ExpoIapModule from '../../ExpoIapModule';
+import { Linking } from 'react-native';
 import {
   isEligibleForIntroOfferIOS,
   syncIOS,
@@ -21,13 +30,7 @@ import {
   deepLinkToSubscriptionsIOS,
   isProductIOS,
 } from '../ios';
-
-// Mock React Native's Linking module
-jest.mock('react-native', () => ({
-  Linking: {
-    openURL: jest.fn(),
-  },
-}));
+/* eslint-enable import/first */
 
 describe('iOS Module Functions', () => {
   beforeEach(() => {
@@ -198,8 +201,6 @@ describe('iOS Module Functions', () => {
 
   describe('Deep Link Functions', () => {
     it('should open subscriptions management URL', async () => {
-      const { Linking } = require('react-native');
-      
       await deepLinkToSubscriptionsIOS();
       
       expect(Linking.openURL).toHaveBeenCalledWith('https://apps.apple.com/account/subscriptions');

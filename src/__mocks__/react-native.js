@@ -1,3 +1,4 @@
+/* global jest */
 module.exports = {
   Linking: {
     openURL: jest.fn(),

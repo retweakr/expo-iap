@@ -28,7 +28,7 @@ export const getActiveSubscriptions = async (
     const filteredPurchases = purchases.filter((purchase) => {
       // If specific IDs provided, filter by them
       if (subscriptionIds && subscriptionIds.length > 0) {
-        if (!subscriptionIds.includes(purchase.id)) {
+        if (!subscriptionIds.includes(purchase.productId)) {
           return false;
         }
       }
@@ -36,7 +36,8 @@ export const getActiveSubscriptions = async (
       // Check if this purchase has subscription-specific fields
       const hasSubscriptionFields = 
         ('expirationDateIOS' in purchase && purchase.expirationDateIOS) ||
-        ('autoRenewingAndroid' in purchase);
+        ('autoRenewingAndroid' in purchase) ||
+        ('environmentIOS' in purchase && purchase.environmentIOS === 'Sandbox');
       
       if (!hasSubscriptionFields) {
         return false;
@@ -47,10 +48,15 @@ export const getActiveSubscriptions = async (
         if ('expirationDateIOS' in purchase && purchase.expirationDateIOS) {
           return purchase.expirationDateIOS > currentTime;
         }
-        if ('environmentIOS' in purchase && purchase.environmentIOS === 'Sandbox') {
+        // For iOS purchases without expiration date (like Sandbox), we consider them active
+        // if they have the environmentIOS field and were created recently
+        if ('environmentIOS' in purchase && purchase.environmentIOS) {
           const dayInMs = 24 * 60 * 60 * 1000;
-          if (purchase.transactionDate && (currentTime - purchase.transactionDate) < dayInMs) {
-            return true;
+          // If no expiration date, consider active if transaction is recent (within 24 hours for Sandbox)
+          if (!('expirationDateIOS' in purchase) || !purchase.expirationDateIOS) {
+            if (purchase.environmentIOS === 'Sandbox' && purchase.transactionDate && (currentTime - purchase.transactionDate) < dayInMs) {
+              return true;
+            }
           }
         }
       } else if (Platform.OS === 'android') {
@@ -64,7 +70,7 @@ export const getActiveSubscriptions = async (
     // Convert to ActiveSubscription format
     for (const purchase of filteredPurchases) {
       const subscription: ActiveSubscription = {
-        productId: purchase.id,
+        productId: purchase.productId,
         isActive: true,
       };
       
@@ -74,8 +80,8 @@ export const getActiveSubscriptions = async (
           const expirationDate = new Date(purchase.expirationDateIOS);
           subscription.expirationDateIOS = expirationDate;
           
-          // Calculate days until expiration
-          const daysUntilExpiration = Math.floor(
+          // Calculate days until expiration (round to nearest day)
+          const daysUntilExpiration = Math.round(
             (purchase.expirationDateIOS - currentTime) / (1000 * 60 * 60 * 24)
           );
           subscription.daysUntilExpirationIOS = daysUntilExpiration;
