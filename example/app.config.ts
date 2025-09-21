@@ -1,4 +1,5 @@
 import type {ConfigContext, ExpoConfig} from '@expo/config';
+import type {ExpoIapPluginCommonOptions} from '../plugin/src/expoConfig.augmentation';
 
 const LOCAL_OPENIAP_PATHS = {
   ios: '/Users/hyo/Github/hyodotdev/openiap/packages/apple',
@@ -6,6 +7,19 @@ const LOCAL_OPENIAP_PATHS = {
 } as const;
 
 export default ({config}: ConfigContext): ExpoConfig => {
+  const iapPluginOptions: ExpoIapPluginCommonOptions = {
+    enableLocalDev: false,
+    localPath: {
+      ios: LOCAL_OPENIAP_PATHS.ios,
+      android: LOCAL_OPENIAP_PATHS.android,
+    },
+    module: 'onside',
+    // modules: {
+    //   expoIap: false,
+    //   onside: true,
+    // },
+  };
+
   const pluginEntries: NonNullable<ExpoConfig['plugins']> = [
     [
       '../app.plugin.js',
@@ -60,6 +74,7 @@ export default ({config}: ConfigContext): ExpoConfig => {
         // },
       },
     ],
+    ['../app.plugin.js', iapPluginOptions],
     'expo-router',
     [
       'expo-splash-screen',
