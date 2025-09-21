@@ -88,6 +88,9 @@ export default ({config}: ConfigContext): ExpoConfig => {
     [
       'expo-build-properties',
       {
+        ios: {
+          deploymentTarget: '16.0',
+        },
         android: {
           kotlinVersion: '2.1.20',
         },
