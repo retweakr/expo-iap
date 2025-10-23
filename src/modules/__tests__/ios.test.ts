@@ -1,6 +1,8 @@
 // Mock the native module first
 jest.mock('../../ExpoIapModule');
 
+jest.mock('expo-onside');
+
 // Mock React Native's Linking module
 jest.mock('react-native', () => ({
   Linking: {
@@ -31,6 +33,9 @@ import {
   isProductIOS,
   getPendingTransactionsIOS,
   clearTransactionIOS,
+  canPresentExternalPurchaseNoticeIOS,
+  presentExternalPurchaseNoticeSheetIOS,
+  presentExternalPurchaseLinkIOS,
 } from '../ios';
 /* eslint-enable import/first */
 
@@ -583,5 +588,61 @@ describe('iOS Module Functions', () => {
 
       expect(result).toBe(false);
     });
+  });
+});
+
+// Added tests for external purchase APIs
+
+describe('External Purchase APIs (iOS)', () => {
+  it('canPresentExternalPurchaseNoticeIOS returns boolean from native', async () => {
+    (
+      ExpoIapModule.canPresentExternalPurchaseNoticeIOS as jest.Mock
+    ).mockResolvedValue(true);
+
+    const result = await canPresentExternalPurchaseNoticeIOS();
+
+    expect(
+      ExpoIapModule.canPresentExternalPurchaseNoticeIOS,
+    ).toHaveBeenCalledTimes(1);
+    expect(result).toBe(true);
+  });
+
+  it('canPresentExternalPurchaseNoticeIOS normalizes undefined to false', async () => {
+    (
+      ExpoIapModule.canPresentExternalPurchaseNoticeIOS as jest.Mock
+    ).mockResolvedValue(undefined);
+
+    const result = await canPresentExternalPurchaseNoticeIOS();
+
+    expect(result).toBe(false);
+  });
+
+  it('presentExternalPurchaseNoticeSheetIOS returns native result', async () => {
+    const mockResult = {action: 'SHOWN'} as any;
+    (
+      ExpoIapModule.presentExternalPurchaseNoticeSheetIOS as jest.Mock
+    ).mockResolvedValue(mockResult);
+
+    const result = await presentExternalPurchaseNoticeSheetIOS();
+
+    expect(
+      ExpoIapModule.presentExternalPurchaseNoticeSheetIOS,
+    ).toHaveBeenCalledTimes(1);
+    expect(result).toBe(mockResult);
+  });
+
+  it('presentExternalPurchaseLinkIOS passes URL to native and returns result', async () => {
+    const url = 'https://example.com/purchases';
+    const mockResult = {success: true} as any;
+    (
+      ExpoIapModule.presentExternalPurchaseLinkIOS as jest.Mock
+    ).mockResolvedValue(mockResult);
+
+    const result = await presentExternalPurchaseLinkIOS(url);
+
+    expect(ExpoIapModule.presentExternalPurchaseLinkIOS).toHaveBeenCalledWith(
+      url,
+    );
+    expect(result).toBe(mockResult);
   });
 });
