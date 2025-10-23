@@ -708,7 +708,6 @@ export const validateReceipt: MutationField<'validateReceipt'> = async (
 
   throw new Error('Platform not supported');
 };
-
 export * from './useIAP';
 export {
   ErrorCodeUtils,
