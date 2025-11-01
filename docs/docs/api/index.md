@@ -49,6 +49,6 @@ Expo IAP is built with TypeScript and provides full type safety for all APIs. Al
 
 ## Need Help?
 
-- Check our [Getting Started Guide](/docs/intro)
+- Check our [Getting Started Guide](/)
 - Visit our [GitHub repository](https://github.com/hyochan/expo-iap)
 - Read our [Blog](/blog) for latest updates

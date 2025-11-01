@@ -17,7 +17,7 @@ const sidebars: SidebarsConfig = {
   tutorialSidebar: [
     {
       type: 'doc',
-      id: 'intro',
+      id: 'index',
       label: 'Introduction',
     },
     {
@@ -68,19 +68,19 @@ const sidebars: SidebarsConfig = {
             {
               type: 'link',
               label: 'Unified APIs',
-              href: '/docs/api/methods/core-methods#unified-apis',
+              href: '/api/methods/core-methods#unified-apis',
             },
             // Nest the separate Listeners doc under Core Methods
             'api/methods/listeners',
             {
               type: 'link',
               label: 'iOS Specific',
-              href: '/docs/api/methods/core-methods#ios-specific',
+              href: '/api/methods/core-methods#ios-specific',
             },
             {
               type: 'link',
               label: 'Android Specific',
-              href: '/docs/api/methods/core-methods#android-specific',
+              href: '/api/methods/core-methods#android-specific',
             },
           ],
         },

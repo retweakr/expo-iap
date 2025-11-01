@@ -12,6 +12,21 @@ import AdFitTopFixed from "@site/src/uis/AdFitTopFixed"; import SponsorSection f
 
 If you're shipping an app with expo-iap, we’d love to hear about it—please share your product and feedback in [Who’s using Expo IAP?](https://github.com/hyochan/expo-iap/discussions/143). Community stories help us keep improving the ecosystem.
 
+## Promotion
+
+<div align="center">
+  <a href="https://hyodotdev.github.io/kstyled" target="_blank" rel="noopener noreferrer">
+    <img src="https://hyodotdev.github.io/kstyled/img/logo.png" alt="kstyled Logo" width="120" />
+  </a>
+
+**Compile-time CSS-in-JS for React Native**
+
+✨ Experience the next generation of styling with **[kstyled](https://hyodotdev.github.io/kstyled)** - a blazing-fast, fully type-safe CSS-in-JS solution with zero runtime overhead.
+
+🚀 **[Explore kstyled →](https://hyodotdev.github.io/kstyled)**
+
+</div>
+
 ## Sponsors & Community Support
 
 We're building the OpenIAP ecosystem—defining the spec at [openiap.dev](https://www.openiap.dev), maintaining [OpenIAP](https://github.com/hyodotdev/openiap) for the shared type system, and shipping native SDKs such as [openiap-apple](https://github.com/hyodotdev/openiap-apple) and [openiap-google](https://github.com/hyodotdev/openiap-google). These modules power [expo-iap](https://github.com/hyochan/expo-iap), [flutter_inapp_purchase](https://github.com/hyochan/flutter_inapp_purchase), [kmp-iap](https://github.com/hyochan/kmp-iap), and [react-native-iap](https://github.com/hyochan/react-native-iap). After simplifying fragmented APIs, the next milestone is a streamlined purchase flow: `initConnection → fetchProducts → requestPurchase → (server receipt validation) → finishTransaction`.
