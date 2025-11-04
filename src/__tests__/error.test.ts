@@ -9,21 +9,11 @@ import {
 } from '../utils/errorMapping';
 import {ErrorCode} from '../types';
 
-jest.mock('../ExpoIapModule', () => ({
-  __esModule: true,
-  default: {
-    ERROR_CODES: {
-      // ErrorCode.AlreadyOwned
-      'already-owned': 'ALREADY_OWNED',
-      // ErrorCode.BillingUnavailable
-      'billing-unavailable': 3,
-      // ErrorCode.NetworkError
-      'network-error': 'NATIVE_NETWORK',
-      // ErrorCode.Unknown
-      unknown: 'NATIVE_UNKNOWN',
-    },
-  },
-  NATIVE_ERROR_CODES: {
+jest.mock('../ExpoIapModule', () => {
+  // Both iOS and Android export 'ERROR_CODES'
+  // Define once and reuse to match actual implementation where
+  // NATIVE_ERROR_CODES = ExpoIapModule.ERROR_CODES || {}
+  const mockErrorCodes = {
     // ErrorCode.AlreadyOwned
     'already-owned': 'ALREADY_OWNED',
     // ErrorCode.BillingUnavailable
@@ -32,8 +22,18 @@ jest.mock('../ExpoIapModule', () => ({
     'network-error': 'NATIVE_NETWORK',
     // ErrorCode.Unknown
     unknown: 'NATIVE_UNKNOWN',
-  },
-}));
+    // ErrorCode.UserCancelled
+    'user-cancelled': 'USER_CANCELLED',
+  };
+
+  return {
+    __esModule: true,
+    default: {
+      ERROR_CODES: mockErrorCodes,
+    },
+    NATIVE_ERROR_CODES: mockErrorCodes,
+  };
+});
 
 describe('errorMapping utilities', () => {
   it('creates purchase error from platform code string', () => {
