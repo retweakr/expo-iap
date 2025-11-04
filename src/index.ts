@@ -22,7 +22,6 @@ import type {
   ActiveSubscription,
   AndroidSubscriptionOfferInput,
   DeepLinkOptions,
-  FetchProductsResult,
   MutationField,
   MutationRequestPurchaseArgs,
   MutationValidateReceiptArgs,
@@ -259,7 +258,7 @@ export const fetchProducts: QueryField<'fetchProducts'> = async (request) => {
 
   const filterIosItems = (
     items: unknown[],
-  ): Product[] | ProductSubscription[] =>
+  ): (Product | ProductSubscription)[] =>
     items.filter((item): item is Product | ProductSubscription => {
       if (!isProductIOS(item)) {
         return false;
@@ -270,7 +269,7 @@ export const fetchProducts: QueryField<'fetchProducts'> = async (request) => {
 
   const filterAndroidItems = (
     items: unknown[],
-  ): Product[] | ProductSubscription[] =>
+  ): (Product | ProductSubscription)[] =>
     items.filter((item): item is Product | ProductSubscription => {
       if (!isProductAndroid(item)) {
         return false;
@@ -280,14 +279,20 @@ export const fetchProducts: QueryField<'fetchProducts'> = async (request) => {
     });
 
   const castResult = (
-    items: Product[] | ProductSubscription[],
-  ): FetchProductsResult => {
+    items: (Product | ProductSubscription)[],
+  ):
+    | (Product | ProductSubscription)[]
+    | Product[]
+    | ProductSubscription[]
+    | null => {
     if (canonical === 'in-app') {
       return items as Product[];
     }
     if (canonical === 'subs') {
       return items as ProductSubscription[];
     }
+    // For 'all' type, items contain both Product and ProductSubscription
+    // Return as ProductOrSubscription[] to preserve discriminated union
     return items;
   };
 
