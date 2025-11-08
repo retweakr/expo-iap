@@ -668,7 +668,8 @@ function PurchaseFlowContainer() {
         '[PurchaseFlow] Not fetching products - not connected',
       );
     }
-  }, [connected, fetchProducts, getAvailablePurchases]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [connected]);
 
   const handleRefreshAvailablePurchases = useCallback(async () => {
     if (refreshingAvailablePurchases) {

@@ -1337,7 +1337,8 @@ function SubscriptionFlowContainer() {
     } else if (!connected) {
       didFetchSubsRef.current = false;
     }
-  }, [connected, fetchProducts]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [connected]);
 
   useEffect(() => {
     if (connected && subscriptions.length > 0) {
