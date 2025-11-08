@@ -471,7 +471,16 @@ export const requestPurchase: MutationField<'requestPurchase'> = async (
 
     if (!normalizedRequest?.sku) {
       throw new Error(
-        'Invalid request for iOS. The `sku` property is required and must be a string.',
+        'Invalid request for iOS. The `sku` property is required and must be a string.\n\n' +
+          'Expected format:\n' +
+          '  requestPurchase({\n' +
+          '    request: {\n' +
+          '      android: { skus: ["product_id"] },\n' +
+          '      ios: { sku: "product_id" }\n' +
+          '    },\n' +
+          '    type: "in-app"\n' +
+          '  })\n\n' +
+          'See: https://hyochan.github.io/expo-iap/docs/api/methods/core-methods#requestpurchase',
       );
     }
 
@@ -510,7 +519,16 @@ export const requestPurchase: MutationField<'requestPurchase'> = async (
 
       if (!normalizedRequest?.skus?.length) {
         throw new Error(
-          'Invalid request for Android. The `skus` property is required and must be a non-empty array.',
+          'Invalid request for Android. The `skus` property is required and must be a non-empty array.\n\n' +
+            'Expected format:\n' +
+            '  requestPurchase({\n' +
+            '    request: {\n' +
+            '      android: { skus: ["product_id"] },\n' +
+            '      ios: { sku: "product_id" }\n' +
+            '    },\n' +
+            '    type: "in-app"\n' +
+            '  })\n\n' +
+            'See: https://hyochan.github.io/expo-iap/docs/api/methods/core-methods#requestpurchase',
         );
       }
 
@@ -543,7 +561,16 @@ export const requestPurchase: MutationField<'requestPurchase'> = async (
 
       if (!normalizedRequest?.skus?.length) {
         throw new Error(
-          'Invalid request for Android. The `skus` property is required and must be a non-empty array.',
+          'Invalid request for Android. The `skus` property is required and must be a non-empty array.\n\n' +
+            'Expected format:\n' +
+            '  requestPurchase({\n' +
+            '    request: {\n' +
+            '      android: { skus: ["subscription_id"] },\n' +
+            '      ios: { sku: "subscription_id" }\n' +
+            '    },\n' +
+            '    type: "subs"\n' +
+            '  })\n\n' +
+            'See: https://hyochan.github.io/expo-iap/docs/api/methods/core-methods#requestpurchase',
         );
       }
 
