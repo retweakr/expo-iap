@@ -189,7 +189,7 @@ public final class ExpoIapModule: Module {
             ExpoIapLog.payload("validateReceiptIOS", payload: ["sku": sku])
             try await ExpoIapHelper.ensureConnection(isInitialized: self.isInitialized)
             do {
-                let props = try OpenIapSerialization.receiptValidationProps(from: ["sku": sku])
+                let props = try OpenIapSerialization.verifyPurchaseProps(from: ["sku": sku])
                 let result = try await OpenIapModule.shared.validateReceiptIOS(props)
                 var payload = OpenIapSerialization.encode(result)
                 payload["purchaseToken"] = result.jwsRepresentation

@@ -5,6 +5,7 @@
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "scripts": {
+    "dry-clean": "rm -rf node_modules && bun install && bun run clean && bun run build",
     "build": "expo-module build",
     "clean": "expo-module clean",
     "lint": "eslint --ext .ts,.tsx,.js,.jsx src",
